@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:products/providers/login_form_provider.dart';
-// import 'package:products/services/notification_service.dart';
-// import 'package:products/ui/input_decoration.dart';
-// import 'package:products/widgets/widgets.dart';
-// import 'package:provider/provider.dart';
-
-// import '../services/auth_service.dart';
 import '../ui/input_decoration.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/card_containte.dart';
@@ -41,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                         Colors.indigo.withOpacity(0.1)),
                     shape: MaterialStateProperty.all(const StadiumBorder())),
                 onPressed: () =>
-                    Navigator.pushReplacementNamed(context, 'register'),
+                    Navigator.pushReplacementNamed(context, '/register'),
                 child: const Text(
                   "Crear una nueva cuenta",
                   style: TextStyle(
@@ -60,14 +53,8 @@ class _LoginForm extends StatelessWidget {
   const _LoginForm({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    dynamic keyF;
-
-    // final loginForm = Provider.of<LoginFormProvider>(context);
     return Form(
-        key: keyF,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        // ignore: todo
-        //TODO mantener la referencia al Key
         child: Column(
           children: [
             TextFormField(
@@ -77,7 +64,7 @@ class _LoginForm extends StatelessWidget {
                     hintText: 'john.doe@gmail.com',
                     labelText: 'Correo electronico',
                     prefixIcon: Icons.alternate_email_sharp),
-                onChanged: (value) => keyF.email = value,
+                onChanged: (value) => value,
                 validator: (value) {
                   String pattern =
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -95,7 +82,7 @@ class _LoginForm extends StatelessWidget {
                     hintText: '******',
                     labelText: 'Contraseña',
                     prefixIcon: Icons.lock_outline),
-                onChanged: (value) => keyF.password = value,
+                onChanged: (value) => value,
                 validator: (value) {
                   return value != null && value.length >= 6
                       ? null
@@ -110,27 +97,13 @@ class _LoginForm extends StatelessWidget {
               color: Colors.deepPurple,
               onPressed: () async {
                 FocusScope.of(context).unfocus();
-                // final authService =
-                //     Provider.of<AuthService>(context, listen: false);
-                // if (!loginForm.isValidForm()) return;
-                // loginForm.isLoading = true;
-
-                // final String? errorMessage = await authService.loginUser(
-                //     loginForm.email, loginForm.password);
-                // if (errorMessage == null) {
-                //   Navigator.pushReplacementNamed(context, 'home');
-                // } else {
-                //   print(errorMessage);
-                //   NotificationService.showSnackBar("errorMessage");
-                //   loginForm.isLoading = false;
-                // }
               },
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: Text(
-                  'Espere',
-                  style: const TextStyle(color: Colors.white),
+                child: const Text(
+                  'Continuar',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

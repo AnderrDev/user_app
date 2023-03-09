@@ -55,12 +55,8 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic keyF;
     return Form(
-        key: keyF.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        // ignore: todo
-        //TODO mantener la referencia al Key
         child: Column(
           children: [
             TextFormField(
@@ -70,7 +66,7 @@ class _LoginForm extends StatelessWidget {
                     hintText: 'john.doe@gmail.com',
                     labelText: 'Correo electronico',
                     prefixIcon: Icons.alternate_email_sharp),
-                onChanged: (value) => keyF.email = value,
+                onChanged: (value) => value,
                 validator: (value) {
                   String pattern =
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -88,7 +84,37 @@ class _LoginForm extends StatelessWidget {
                     hintText: '******',
                     labelText: 'Contraseña',
                     prefixIcon: Icons.lock_outline),
-                onChanged: (value) => keyF.password = value,
+                onChanged: (value) => value,
+                validator: (value) {
+                  return value != null && value.length >= 6
+                      ? null
+                      : 'La contraseña debe tener 6 caracteres';
+                }),
+            const SizedBox(height: 30),
+            TextFormField(
+                autocorrect: false,
+                obscureText: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecorations.authInputDecoration(
+                    hintText: '******',
+                    labelText: 'Contraseña',
+                    prefixIcon: Icons.lock_outline),
+                onChanged: (value) => value,
+                validator: (value) {
+                  return value != null && value.length >= 6
+                      ? null
+                      : 'La contraseña debe tener 6 caracteres';
+                }),
+            const SizedBox(height: 30),
+            TextFormField(
+                autocorrect: false,
+                obscureText: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecorations.authInputDecoration(
+                    hintText: '******',
+                    labelText: 'Contraseña',
+                    prefixIcon: Icons.lock_outline),
+                onChanged: (value) => value,
                 validator: (value) {
                   return value != null && value.length >= 6
                       ? null
@@ -103,26 +129,13 @@ class _LoginForm extends StatelessWidget {
               color: Colors.deepPurple,
               onPressed: () async {
                 FocusScope.of(context).unfocus();
-                // final authService =
-                //     Provider.of<AuthService>(context, listen: false);
-                // if (!loginForm.isValidForm()) return;
-
-                // final String? errorMessage = await authService.createUser(
-                //     loginForm.email, loginForm.password);
-
-                // if (errorMessage == null) {
-                //   Navigator.pushReplacementNamed(context, 'home');
-                // } else {
-                //   print(errorMessage);
-                // }
-                // loginForm.isLoading = true;
               },
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: Text(
+                child: const Text(
                   "Ingresar",
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

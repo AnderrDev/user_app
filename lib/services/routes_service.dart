@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:user_app/screens/check_auth_screen.dart';
 import 'package:user_app/screens/home.dart';
 import 'package:user_app/screens/login_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
 import 'package:user_app/screens/register_screen.dart';
 
-class AppRoutes {
-  static const String first = '/profile';
+class RoutesService {
+  static const String first = '/';
 
-  static const routes = <Map<String,dynamic>> [
+  static const routes = <Map<String, dynamic>>[
+    //ChekAuthScreen
+    {
+      'route': '/',
+      'screen': CheckAuthScreen(),
+    },
     // Homme
     {
       'route': '/home',
@@ -40,17 +46,8 @@ class AppRoutes {
 
   // Generator of routes
   static Route generateRoutes(RouteSettings settings) {
-    switch (settings.name) {
-      case '/home':
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case '/login':
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case '/profile':
-        return MaterialPageRoute(builder: (_) => const ProfileScreen());
-      case '/register':
-        return MaterialPageRoute(builder: (_) => const RegisterScreen());
-      default:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-    }
+    return MaterialPageRoute(
+      builder: (context) => const CheckAuthScreen(),
+    );
   }
 }

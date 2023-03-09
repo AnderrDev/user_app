@@ -16,62 +16,77 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const <Widget>[
-                  SizedBox(height: 20.0),
-                  CircleAvatar(
+                children: <Widget>[
+                  const SizedBox(height: 20.0),
+                  const CircleAvatar(
                     radius: 50.0,
                     backgroundImage: NetworkImage('https://picsum.photos/200'),
                   ),
-                  
-                  SizedBox(height: 20.0),
-                  Text(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {},
+                      ),
+                      const Text(
+                        'User Name',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'User Name',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'User Email',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'User Phone',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'User Address',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'User Website',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'User Company',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                 ],
               ),
             )));
