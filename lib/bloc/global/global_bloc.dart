@@ -53,6 +53,7 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
       // Setea usuario en el state
       emit(state.copyWith(isLoggedIn: true));
       // TODO: Llamar logica que trae los datos del usuario del api
+      // Navigator.pushReplacementNamed(event.context, '/home');
     } else {
       // No se pudo loguear el usuario
       add(SetIsLoggedIn(false));

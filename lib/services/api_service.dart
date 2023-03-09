@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: constant_identifier_names
 const String API_URL = 'http://54.156.128.171:3000/';
 
 class ApiResponse {
@@ -15,6 +14,7 @@ class ApiResponse {
 class ApiService {
   static Future<ApiResponse> getHttp(
     String endpoint, {
+    // ignore: unnecessary_question_mark
     dynamic? filter,
     bool? count,
     String? token,
@@ -90,7 +90,7 @@ class ApiService {
   }
 
   static deleteHttp(String table, String id, {String? token}) async {
-    String url = API_URL + table + '/' + id;
+    String url = '$API_URL$table/$id';
     try {
       if (token != null) {
         final response =

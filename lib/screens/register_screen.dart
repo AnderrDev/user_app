@@ -11,10 +11,12 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: AuthBackground(
+      icon: Icons.person_add,
       child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            const SizedBox(height: 250),
+            const SizedBox(height: 170),
             CardContainer(
               child: Column(children: [
                 const SizedBox(height: 10),
@@ -60,21 +62,43 @@ class _LoginForm extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: 'john.doe@gmail.com',
-                    labelText: 'Correo electronico',
-                    prefixIcon: Icons.alternate_email_sharp),
-                onChanged: (value) => value,
-                validator: (value) {
-                  String pattern =
-                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regExp = RegExp(pattern);
-                  return regExp.hasMatch(value ?? '')
-                      ? null
-                      : 'El valor ingresado no luce como un correo';
-                }),
+              autocorrect: false,
+              keyboardType: TextInputType.name,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'John',
+                  labelText: 'Nombre',
+                  prefixIcon: Icons.person),
+              onChanged: (value) => value,
+            ),
+            const SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.name,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'Doe',
+                  labelText: 'Apellido',
+                  prefixIcon: Icons.person),
+              onChanged: (value) => value,
+            ),
+            const SizedBox(height: 30),
+            TextFormField(
+              keyboardType: TextInputType.datetime,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: '10 Nov 1990',
+                  labelText: 'Fecha de Nacimiento',
+                  prefixIcon: Icons.date_range_outlined),
+              onChanged: (value) => value,
+            ),
+            const SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'john.doe@gmail.com',
+                  labelText: 'Correo electronico',
+                  prefixIcon: Icons.alternate_email_sharp),
+              onChanged: (value) => value,
+            ),
             const SizedBox(height: 30),
             TextFormField(
                 autocorrect: false,
@@ -92,41 +116,22 @@ class _LoginForm extends StatelessWidget {
                 }),
             const SizedBox(height: 30),
             TextFormField(
-                autocorrect: false,
-                obscureText: true,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: '******',
-                    labelText: 'Contraseña',
-                    prefixIcon: Icons.lock_outline),
-                onChanged: (value) => value,
-                validator: (value) {
-                  return value != null && value.length >= 6
-                      ? null
-                      : 'La contraseña debe tener 6 caracteres';
-                }),
-            const SizedBox(height: 30),
-            TextFormField(
-                autocorrect: false,
-                obscureText: true,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: '******',
-                    labelText: 'Contraseña',
-                    prefixIcon: Icons.lock_outline),
-                onChanged: (value) => value,
-                validator: (value) {
-                  return value != null && value.length >= 6
-                      ? null
-                      : 'La contraseña debe tener 6 caracteres';
-                }),
+              autocorrect: false,
+              obscureText: true,
+              keyboardType: TextInputType.streetAddress,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'Calle 1 # 2 - 3',
+                  labelText: 'Dirección Fisica',
+                  prefixIcon: Icons.directions_walk),
+              onChanged: (value) => value,
+            ),
             const SizedBox(height: 30),
             MaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               disabledColor: Colors.grey,
               elevation: 0,
-              color: Colors.deepPurple,
+              color: Colors.indigo,
               onPressed: () async {
                 FocusScope.of(context).unfocus();
               },

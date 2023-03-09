@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_app/bloc/global/global_bloc.dart';
 import 'package:user_app/screens/home.dart';
-import 'package:user_app/screens/login_screen.dart';
 import 'package:user_app/services/storage_service.dart';
 
 
@@ -43,7 +42,7 @@ class CheckAuthScreen extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const LoginScreen(),
+                    pageBuilder: (_, __, ___) => const HomeScreen(),
                     transitionDuration: const Duration(seconds: 0),
                   ),
                 );

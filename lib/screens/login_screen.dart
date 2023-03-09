@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: AuthBackground(
+      icon: Icons.person_pin,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -94,7 +95,7 @@ class _LoginForm extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20)),
               disabledColor: Colors.grey,
               elevation: 0,
-              color: Colors.deepPurple,
+              color: Colors.indigo,
               onPressed: () async {
                 FocusScope.of(context).unfocus();
               },
