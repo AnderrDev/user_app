@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_app/bloc/global/global_bloc.dart';
+import 'package:user_app/widgets/app_bar.dart';
 import 'package:user_app/widgets/drawer.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -6,36 +9,61 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        drawer: const DrawerF(),
-        appBar: AppBar(
-          title: const Text('Profile'),
-        ),
-        body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const <Widget>[
-                  _ProfileCard(),
-                  SizedBox(height: 20.0),
-                  SizedBox(height: 20.0),
-                  _Row(),
-                  _Divider(),
-                  _Row(),
-                  _Divider(),
-                  _Row(),
-                  _Divider(),
-                  _Row(),
-                  _Divider(),
-                  _Row(),
-                  _Divider(),
-                  _Row(),
-                ],
-              ),
-            )));
+    final GlobalBloc globalBloc = BlocProvider.of<GlobalBloc>(context);
+    return BlocBuilder<GlobalBloc, GlobalState>(
+      builder: (context, state) {
+        dynamic user = globalBloc.state.user;
+        return Scaffold(
+            drawer: const DrawerF(),
+            appBar: const MyAppBar(title: 'Profile'),
+            body: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      _ProfileCard(
+                          name: user['name'] ?? '',
+                          lastname: user['lastname'] ?? '',
+                          email: user['username'] ?? ''),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        "ABOUT",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 18),
+                      ),
+                      const SizedBox(height: 20.0),
+                      _Row(
+                        icon: Icons.person_add,
+                        field: 'Name',
+                        value: user['name'] ?? '',
+                      ),
+                      const _Divider(),
+                      _Row(
+                        icon: Icons.person_add_sharp,
+                        field: 'Lastname',
+                        value: user['lastname'] ?? '',
+                      ),
+                      const _Divider(),
+                      _Row(
+                        icon: Icons.email,
+                        field: 'Email',
+                        value: user['username'] ?? '',
+                      ),
+                      const _Divider(),
+                      _Row(
+                        icon: Icons.date_range_rounded,
+                        field: 'Birthdate',
+                        value: user['birthdate'] ?? '',
+                      ),
+                      const _Divider(),
+                    ],
+                  ),
+                )));
+      },
+    );
   }
 }
 
@@ -54,8 +82,15 @@ class _Divider extends StatelessWidget {
 }
 
 class _ProfileCard extends StatelessWidget {
+  final String name;
+  final String email;
+  final String lastname;
+
   const _ProfileCard({
     Key? key,
+    required this.name,
+    required this.email,
+    required this.lastname,
   }) : super(key: key);
 
   @override
@@ -89,16 +124,16 @@ class _ProfileCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: const [
+                  children: [
                     Text(
-                      'John Doe',
-                      style: TextStyle(
+                      '$name $lastname',
+                      style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: Colors.indigo),
                     ),
-                    SizedBox(width: 5),
-                    Icon(
+                    const SizedBox(width: 5),
+                    const Icon(
                       Icons.verified,
                       color: Colors.grey,
                       size: 20,
@@ -106,9 +141,9 @@ class _ProfileCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 5),
-                const Text(
-                  'John.doe@gmail.com',
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                Text(
+                  email,
+                  style: const TextStyle(color: Colors.grey, fontSize: 14),
                 ),
               ],
             ),
@@ -125,8 +160,14 @@ class _ProfileCard extends StatelessWidget {
 }
 
 class _Row extends StatelessWidget {
+  final String field;
+  final String value;
+  final IconData icon;
   const _Row({
     Key? key,
+    required this.field,
+    required this.value,
+    required this.icon,
   }) : super(key: key);
 
   @override
@@ -135,17 +176,22 @@ class _Row extends StatelessWidget {
       padding: const EdgeInsets.all(14.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const <Widget>[
+        children: <Widget>[
+          Icon(
+            icon,
+            color: Colors.indigo,
+          ),
+          const SizedBox(width: 20.0),
           Text(
-            'Nombre: ',
-            style: TextStyle(
+            '$field: ',
+            style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-            'Juan Perez',
-            style: TextStyle(
+            value,
+            style: const TextStyle(
               fontSize: 14.0,
             ),
           ),

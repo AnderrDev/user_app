@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import '../ui/input_decoration.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_app/bloc/global/global_bloc.dart';
+import 'package:user_app/common/enums.dart';
+import 'package:user_app/widgets/text_field_base.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/card_containte.dart';
 
@@ -8,6 +11,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Scaffold(
         body: AuthBackground(
       icon: Icons.person_pin,
@@ -23,7 +28,7 @@ class LoginScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 const SizedBox(height: 30),
-                const _LoginForm(),
+                _LoginForm(formKey: formKey),
               ]),
             ),
             const SizedBox(
@@ -37,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () =>
                     Navigator.pushReplacementNamed(context, '/register'),
                 child: const Text(
-                  "Crear una nueva cuenta",
+                  "Create New Account",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -51,65 +56,71 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginForm extends StatelessWidget {
-  const _LoginForm({Key? key}) : super(key: key);
+  final GlobalKey<FormState> formKey;
+  const _LoginForm({Key? key, required this.formKey}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          children: [
-            TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: 'john.doe@gmail.com',
-                    labelText: 'Correo electronico',
-                    prefixIcon: Icons.alternate_email_sharp),
-                onChanged: (value) => value,
-                validator: (value) {
-                  String pattern =
-                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regExp = RegExp(pattern);
-                  return regExp.hasMatch(value ?? '')
-                      ? null
-                      : 'El valor ingresado no luce como un correo';
-                }),
-            const SizedBox(height: 30),
-            TextFormField(
-                autocorrect: false,
-                obscureText: true,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: '******',
-                    labelText: 'Contraseña',
-                    prefixIcon: Icons.lock_outline),
-                onChanged: (value) => value,
-                validator: (value) {
-                  return value != null && value.length >= 6
-                      ? null
-                      : 'La contraseña debe tener 6 caracteres';
-                }),
-            const SizedBox(height: 30),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Colors.indigo,
-              onPressed: () async {
-                FocusScope.of(context).unfocus();
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: const Text(
-                  'Continuar',
-                  style: TextStyle(color: Colors.white),
+    final Map<String, String> formValues = <String, String>{
+      'username': '',
+      'password': '',
+    };
+    return BlocBuilder<GlobalBloc, GlobalState>(
+      builder: (context, state) {
+        return Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                TextFieldBase(
+                  hintText: 'john.doe@gmail.com',
+                  labelText: 'Email',
+                  prefixIcon: Icons.alternate_email_sharp,
+                  validateText: ValidateText.email,
+                  keyboardType: TextInputType.emailAddress,
+                  formProperty: 'username',
+                  formValues: formValues,
                 ),
-              ),
-            ),
-            const SizedBox(height: 50),
-          ],
-        ));
+                const SizedBox(height: 30),
+                TextFieldBase(
+                  obscureText: true,
+                  hintText: '******',
+                  labelText: 'Password',
+                  prefixIcon: Icons.lock_outline,
+                  validateText: ValidateText.password,
+                  keyboardType: TextInputType.emailAddress,
+                  formProperty: 'password',
+                  formValues: formValues,
+                ),
+                const SizedBox(height: 30),
+                MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  disabledColor: Colors.grey,
+                  elevation: 0,
+                  color: Colors.indigo,
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      context.read<GlobalBloc>().add(LoginUser(
+                          context: context,
+                          password: formValues['password']!,
+                          email: formValues['username']!));
+                    }
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 80, vertical: 15),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 50),
+              ],
+            ));
+      },
+    );
   }
 }

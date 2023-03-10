@@ -1,20 +1,16 @@
 part of 'global_bloc.dart';
 
 class GlobalState {
-  final bool isLoading;
-  final bool isLoggedIn;
+  final dynamic user;
   GlobalState({
-    this.isLoading = false,
-    this.isLoggedIn = false,
+    this.user,
   });
 
   GlobalState copyWith({
-    bool? isLoading,
-    bool? isLoggedIn,
+    Map<String, dynamic>? user,
   }) {
     return GlobalState(
-      isLoading: isLoading ?? this.isLoading,
-      isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      user: user ?? this.user,
     );
   }
 }

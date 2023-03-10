@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_app/bloc/global/global_bloc.dart';
 import 'package:user_app/screens/home.dart';
+import 'package:user_app/screens/login_screen.dart';
 import 'package:user_app/services/storage_service.dart';
-
 
 class CheckAuthScreen extends StatelessWidget {
   const CheckAuthScreen({super.key});
@@ -21,8 +21,8 @@ class CheckAuthScreen extends StatelessWidget {
             );
           } else {
             if (snapshot.hasData) {
-              globalBloc.add(SetIsLoading(true));
-              globalBloc.add(AuthTokenUser(snapshot.data ?? ''));
+              globalBloc.add(
+                  AuthTokenUser(token: snapshot.data ?? '', context: context));
               Future.microtask(() {
                 Navigator.pushReplacement(
                   context,
@@ -37,12 +37,11 @@ class CheckAuthScreen extends StatelessWidget {
               );
             } else {
               Future.microtask(() {
-                globalBloc.add(SetIsLoading(true));
-                globalBloc.add(SignOut());
+                globalBloc.add(SignOut(context));
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const HomeScreen(),
+                    pageBuilder: (_, __, ___) => const LoginScreen(),
                     transitionDuration: const Duration(seconds: 0),
                   ),
                 );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_app/bloc/global/global_bloc.dart';
+import 'package:user_app/widgets/text_field_base.dart';
 
-import '../ui/input_decoration.dart';
+import '../common/enums.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/card_containte.dart';
 
@@ -9,6 +12,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Scaffold(
         body: AuthBackground(
       icon: Icons.person_add,
@@ -21,11 +26,11 @@ class RegisterScreen extends StatelessWidget {
               child: Column(children: [
                 const SizedBox(height: 10),
                 Text(
-                  "Crear Cuenta",
+                  "Create Account",
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 const SizedBox(height: 30),
-                const _LoginForm(),
+                _LoginForm(formKey: formKey),
               ]),
             ),
             const SizedBox(
@@ -39,7 +44,7 @@ class RegisterScreen extends StatelessWidget {
                 onPressed: () =>
                     Navigator.pushReplacementNamed(context, 'login'),
                 child: const Text(
-                  "¿Ya tienes una cuenta?",
+                  "¿Do you already have an account?",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -53,99 +58,108 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class _LoginForm extends StatelessWidget {
-  const _LoginForm({Key? key}) : super(key: key);
+  final GlobalKey<FormState> formKey;
+  const _LoginForm({Key? key, required this.formKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          children: [
-            TextFormField(
-              autocorrect: false,
-              keyboardType: TextInputType.name,
-              decoration: InputDecorations.authInputDecoration(
+    final Map<String, String> formValues = <String, String>{
+      'email': '',
+      'password': '',
+      'name': '',
+      'lastname': '',
+      'birthdate': '',
+    };
+    return BlocBuilder<GlobalBloc, GlobalState>(
+      builder: (context, state) {
+        return Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                TextFieldBase(
+                  keyboardType: TextInputType.name,
                   hintText: 'John',
-                  labelText: 'Nombre',
-                  prefixIcon: Icons.person),
-              onChanged: (value) => value,
-            ),
-            const SizedBox(height: 30),
-            TextFormField(
-              autocorrect: false,
-              keyboardType: TextInputType.name,
-              decoration: InputDecorations.authInputDecoration(
-                  hintText: 'Doe',
-                  labelText: 'Apellido',
-                  prefixIcon: Icons.person),
-              onChanged: (value) => value,
-            ),
-            const SizedBox(height: 30),
-            TextFormField(
-              keyboardType: TextInputType.datetime,
-              decoration: InputDecorations.authInputDecoration(
-                  hintText: '10 Nov 1990',
-                  labelText: 'Fecha de Nacimiento',
-                  prefixIcon: Icons.date_range_outlined),
-              onChanged: (value) => value,
-            ),
-            const SizedBox(height: 30),
-            TextFormField(
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecorations.authInputDecoration(
-                  hintText: 'john.doe@gmail.com',
-                  labelText: 'Correo electronico',
-                  prefixIcon: Icons.alternate_email_sharp),
-              onChanged: (value) => value,
-            ),
-            const SizedBox(height: 30),
-            TextFormField(
-                autocorrect: false,
-                obscureText: true,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: '******',
-                    labelText: 'Contraseña',
-                    prefixIcon: Icons.lock_outline),
-                onChanged: (value) => value,
-                validator: (value) {
-                  return value != null && value.length >= 6
-                      ? null
-                      : 'La contraseña debe tener 6 caracteres';
-                }),
-            const SizedBox(height: 30),
-            TextFormField(
-              autocorrect: false,
-              obscureText: true,
-              keyboardType: TextInputType.streetAddress,
-              decoration: InputDecorations.authInputDecoration(
-                  hintText: 'Calle 1 # 2 - 3',
-                  labelText: 'Dirección Fisica',
-                  prefixIcon: Icons.directions_walk),
-              onChanged: (value) => value,
-            ),
-            const SizedBox(height: 30),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Colors.indigo,
-              onPressed: () async {
-                FocusScope.of(context).unfocus();
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: const Text(
-                  "Ingresar",
-                  style: TextStyle(color: Colors.white),
+                  labelText: 'Name',
+                  prefixIcon: Icons.person,
+                  validateText: ValidateText.name,
+                  formProperty: 'name',
+                  formValues: formValues,
                 ),
-              ),
-            ),
-            const SizedBox(height: 50),
-          ],
-        ));
+                const SizedBox(height: 30),
+                TextFieldBase(
+                  keyboardType: TextInputType.name,
+                  hintText: 'Doe',
+                  labelText: 'Lastname',
+                  prefixIcon: Icons.person,
+                  validateText: ValidateText.lastname,
+                  formProperty: 'lastname',
+                  formValues: formValues,
+                ),
+                const SizedBox(height: 30),
+                TextFieldBase(
+                  keyboardType: TextInputType.datetime,
+                  hintText: 'dd/mm/yyyy',
+                  labelText: 'Birthdate',
+                  prefixIcon: Icons.date_range_outlined,
+                  validateText: ValidateText.date,
+                  formProperty: 'birthdate',
+                  formValues: formValues,
+                ),
+                const SizedBox(height: 30),
+                TextFieldBase(
+                  hintText: 'john.doe@gmail.com',
+                  labelText: 'Email',
+                  prefixIcon: Icons.alternate_email_sharp,
+                  validateText: ValidateText.email,
+                  keyboardType: TextInputType.emailAddress,
+                  formProperty: 'email',
+                  formValues: formValues,
+                ),
+                const SizedBox(height: 30),
+                TextFieldBase(
+                  obscureText: true,
+                  hintText: '******',
+                  labelText: 'Password',
+                  prefixIcon: Icons.lock_outline,
+                  validateText: ValidateText.password,
+                  keyboardType: TextInputType.text,
+                  formProperty: 'password',
+                  formValues: formValues,
+                ),
+                const SizedBox(height: 30),
+                MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  disabledColor: Colors.grey,
+                  elevation: 0,
+                  color: Colors.indigo,
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      context.read<GlobalBloc>().add(RegisterUser(
+                          context: context,
+                          password: formValues['password']!,
+                          name: formValues['name']!,
+                          lastname: formValues['lastname']!,
+                          birthdate: formValues['birthdate']!,
+                          email: formValues['email']!));
+                    }
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 80, vertical: 15),
+                    child: const Text(
+                      "Continue",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 50),
+              ],
+            ));
+      },
+    );
   }
 }

@@ -12,7 +12,7 @@ class InputDecorations {
             borderSide: BorderSide(color: Colors.indigo, width: 2)),
         hintText: hintText,
         labelText: labelText,
-        labelStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
         prefixIcon: prefixIcon != null
             ? Icon(
                 prefixIcon,

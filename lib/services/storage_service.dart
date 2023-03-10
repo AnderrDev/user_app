@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StorageService {
@@ -12,6 +11,5 @@ class StorageService {
 
   static Future deleteProperty(String property) async {
     await const FlutterSecureStorage().delete(key: property);
-    debugPrint('delete $property');
   }
 }
